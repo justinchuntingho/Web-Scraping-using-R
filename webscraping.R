@@ -1,14 +1,17 @@
+install.packages("rvest")
+install.packages("magrittr")
+install.packages("stringr")
+
 library(rvest)
 library(magrittr)
 library(stringr)
 
-
-# SPS Website -------------------------------------------------------------
+#################################################### SPS Website #################################################### 
 
 # For every webscraping task, you need do three things:
 # 1. Download the html
 # 2. Select the node that contains the information you want
-# 3. Parse the html and get either: A. the text; or B. more links
+# 3. Parse the html and get either: A. the text or B. more links
 
 # Consider Scenerio A: you have a link that contains all the information you need
 # For example, if you would like to scrape the email addresse of all SPS staff from the website: http://www.sps.ed.ac.uk/staff
@@ -28,28 +31,25 @@ html %>% html_nodes(".person_contact a") %>% html_text()  # To get links, use ht
 
 # Scenerio B: what if you are interested in what they are saying in their staff profile?
 # You need to get the links
+html %>% html_nodes(".person_name a") %>% html_attr("href")
 
+# To be able to further use the link, you need to assign it to an object
 staff.links <- html %>% html_nodes(".person_name a") %>% html_attr("href")
 
 # Now we have the link, but it would take forever to visit one by one
 # We need to write a loop to do step 1 to 3 for EVERY link
 
-for (i in 1:length(staff.links[1:10])){
+for (i in 1:length(staff.links[1:10])){ # note that I am only downloading the first 10
   profile <- read_html(staff.links[i]) # download the html from the link
   profile %>% html_nodes("article") %>% # select the node
     html_text() %>% # parse the text
     cat(file=paste("profile_", i, ".txt", sep = ""), sep="", append=FALSE) # Save it to a file
 }
 
-
-
-
-
-
-
-# DailyMail ---------------------------------------------------------------
+#################################################### DailyMail #################################################### 
 
 # Moving on to scraping Daily Mail
+# http://www.dailymail.co.uk/
 # Tips for web scraping: always try to find 1. text version 2. page that contains a list of links
 # Eg site archive
 
@@ -58,7 +58,8 @@ for (i in 1:length(staff.links[1:10])){
 html <- read_html("http://www.dailymail.co.uk/home/sitemaparchive/month_201804.html")
 day.links <- html %>% html_nodes(".ccox a") %>% html_attr("href")
 
-# 2. Scrape the links of each day
+# 2. Scrape the links to the articles for each day
+
 article.links <- c()
 for (i in 1:length(day.links)){
   temp <- read_html(paste("http://www.dailymail.co.uk",day.links[i], sep="")) # download the html from the link
@@ -85,7 +86,7 @@ grep("/news/", article.links)
 news.link <- article.links[grep("/news/", article.links)]
 
 
-# Reconstructing the url --------------------------------------------------
+#################################################### Reconstructing the url #################################################### 
 
 # What if I want to scrape the article for Brexit?
 # There is a search function...
@@ -105,7 +106,7 @@ for (i in 1:length(offset)){
 }
 
 for (i in 1:length(brexit.links[1:10])){ # I am just download the first 10th, just for demonstration
-  temp <- read_html(paste("http://www.dailymail.co.uk",article.links[i], sep="")) # download the html from the link
+  temp <- read_html(paste("http://www.dailymail.co.uk",brexit.links[i], sep="")) # download the html from the link
   text <- temp %>% html_nodes(".mol-para-with-font") %>% # select the node
     html_text() %>% 
     cat(file=paste("brexit_", i, ".txt", sep = ""), sep="", append=FALSE)
@@ -146,6 +147,8 @@ png("brexit.png", width = 1200, height = 1200)
 textplot_wordcloud(dfm, min.freq = 1, colors = c("#1B9E77","#D95F02","#7570B3","#E7298A"))
 dev.off()
 
-# Tips: sometimes you might want to lay low
-# Sys.sleep(sample(seq(1, 3, by=0.001), 1))
+
+#################################################### Reconstructing the url #################################################### 
+# Sometimes you might want to lay low
+Sys.sleep(sample(seq(1, 3, by=0.001), 1))
 

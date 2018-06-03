@@ -1,0 +1,95 @@
+---
+title: "R Basics"
+author: "Justin Ho"
+date: "10/11/2017"
+output:
+  html_document:
+    keep_md: true
+    self_contained: true
+---
+
+# This is a title
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+R is simply a calculator, you can perform simple computation by typing the equation.
+```{r}
+3+4
+```
+
+You can define a new object with the assignment operator "<-".
+```{r}
+result <- 3+4+1
+```
+
+When defining a object, nothing will happen when sucessful (no news is good news). To view the object, you can simply type the name of the object.
+```{r}
+result
+```
+
+You can also put string inside an object, remember the quotation mark.
+```{r}
+text <- "This is a test message again"
+```
+
+To view it, type the name of the object.
+```{r}
+text
+```
+
+A vector is a sequence of data elements, we can use "c()" to define a vector.
+```{r}
+vector <- c(1, 2, 5, 7, 8, 9, 10, 100)
+vector
+```
+
+You can access a particular compenent of a vector (or many other object types) by using the slicing operator "[]".
+```{r}
+vector[1] # It shows the first element.
+vector[3] # It shows the third element.
+vector[1:3] # It shows elements from the first to the second one.
+vector[-1] # It shows all the elements EXCEPT the first one.
+```
+
+A function is a group of prewritten codes, it takes in data and produces output. For example, "summary()" is a often used function.
+```{r}
+summary(vector)
+```
+
+If you are calling a gigatic object, you don't want to mess up your screen, you might use "head()" to shows the first few components/lines.
+```{r}
+tail(vector, 3)
+```
+
+To know what a function does, use "?" .
+```{r}
+?head
+```
+
+Most functions take in extra arguments too.
+```{r}
+head(vector, 2) # showing the first two components
+```
+
+It works for vector of strings too.
+```{r}
+textvector <- c("This", "is", "a", "test", "message", ".")
+textvector
+textvector[2]
+head(textvector, 3)
+summary(textvector)
+```
+
+You can nest the function like this.
+```{r}
+summary(head(vector, 2))
+```
+
+Alternatively, if you load the magrittr package, you can pipe it. It does the same thing, but is written in a slightly amiable way.
+```{r}
+library(magrittr)
+head(vector) %>% summary()
+```
+
