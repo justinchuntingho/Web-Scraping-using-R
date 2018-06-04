@@ -135,20 +135,21 @@ for (i in 1:length(brexit.textbased)){ # I am just download the first 10th, just
   brexit.post <- c(brexit.post, text)
   print(i)
 }
-saveRDS(brexit.post, "brexit.post.rds")
+# saveRDS(brexit.post, "brexit.post.rds")
 
-# A very simple exploration
-library(quanteda)
-dfm <- dfm(corpus(brexit.post), remove = c(stopwords('english'), "per", "cent"), remove_numbers = TRUE, remove_punct = TRUE) 
+# # A very simple exploration, you don't have to run it
+# library(quanteda)
+# brexit.post <- readRDS("brexit.post.rds")
+# dfm <- dfm(corpus(brexit.post), remove = c(stopwords('english'), "per", "cent"), remove_numbers = TRUE, remove_punct = TRUE) 
+# 
+# topfeatures(dfm, 100)
+# 
+# png("brexit.png", width = 1200, height = 1200)
+# textplot_wordcloud(dfm, min.freq = 1, colors = c("#1B9E77","#D95F02","#7570B3","#E7298A"))
+# dev.off()
 
-topfeatures(dfm, 100)
 
-png("brexit.png", width = 1200, height = 1200)
-textplot_wordcloud(dfm, min.freq = 1, colors = c("#1B9E77","#D95F02","#7570B3","#E7298A"))
-dev.off()
-
-
-#################################################### Reconstructing the url #################################################### 
+#################################################### Lay Low #################################################### 
 # Sometimes you might want to lay low
 Sys.sleep(sample(seq(1, 3, by=0.001), 1))
 
