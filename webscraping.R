@@ -19,8 +19,9 @@ library(stringr)
 # Step 1: Download the html
 html <- read_html("http://www.sps.ed.ac.uk/staff")
 
-# Step 2: Identify the node, I recommend SelectorGadget
-# There are many ways to do it, you could identify the cell by CSS ".person_contact"
+# Step 2: Identify the node that contains the information you need
+# There are many ways to do it, you could read the raw html to see the "class" or "id", or use SelectorGadget
+# In this case, you could identify the cell by CSS ".person_contact" 
 
 # Step 3: Parse the codes
 # Selecting the cells
