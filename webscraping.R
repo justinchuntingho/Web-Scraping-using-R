@@ -24,10 +24,10 @@ html <- read_html("http://www.sps.ed.ac.uk/staff")
 # In this case, you could identify the cell by CSS ".person_contact" 
 
 # Step 3: Parse the codes
-# Selecting the cells
+# First approach, selecting the whole cell
 html %>% html_nodes(".person_contact") %>% html_text() 
 
-# Second approch, selecting the links by adding "a" after a space
+# Second approch, selecting the links by adding "a" after a space, it means selecting only the <a> tags.
 html %>% html_nodes(".person_contact a") %>% html_text()  # To get links, use html_attr("href") instead
 
 # Scenerio B: what if you are interested in what they are saying in their staff profile?
@@ -62,7 +62,7 @@ day.links <- html %>% html_nodes(".ccox a") %>% html_attr("href")
 # 2. Scrape the links to the articles for each day
 
 article.links <- c()
-for (i in 1:length(day.links)){
+for (i in 1:length(day.links[1:10])){
   temp <- read_html(paste("http://www.dailymail.co.uk",day.links[i], sep="")) # download the html from the link
   link <- temp %>% html_nodes(".debate.link-box a") %>% # select the node
     html_attr("href") # get the links
